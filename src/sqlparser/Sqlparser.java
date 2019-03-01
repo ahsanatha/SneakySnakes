@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author TSR
+ * @author Muhammad Ahsan Athallah
  */
 public class Sqlparser {
     public static boolean status = true;
@@ -30,6 +30,7 @@ public class Sqlparser {
         }else{
             System.out.println(error);
         }
+        
     }
     
     private static void cekSyntax(String query){
@@ -45,6 +46,7 @@ public class Sqlparser {
                 status = false;
                 error = "Syntax Error : column epected after ','";
             }
+            
         }
         
     }

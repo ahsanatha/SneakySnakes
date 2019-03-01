@@ -1,10 +1,10 @@
-# sqlparser
+# sqlqueryparser
 
-Anggota Kelompok :
-Almer Fandriyanto - 1301171089
-Dionisio Febrianto - 1301174280
-Felia Novitasari - 1301174233
-Muhammad Ahsan Athallah - 1301174068
+Anggota Kelompok : <br/>
+Almer Fandriyanto - 1301171089 <br/>
+Dionisio Febrianto - 1301174280 <br/>
+Felia Novitasari - 1301174233 <br/>
+Muhammad Ahsan Athallah - 1301174068 <br/>
 
 # Try : 
 - query without semicolon ";"

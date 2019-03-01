@@ -21,10 +21,10 @@ public class Sqlparser {
     public static String error = "";
     
     public static void main(String[] args) {
-        List<List<String>> db = bukaFile("db.txt");
+        List<List<String>> db = bukaFile("db.txt"); // membuka file
         //System.out.println(db.get(0).get(0));
-        String a = "select id_mov,title from movies join usermovies on (movies.id_mov=usermovies.id_mov);";
-        cekSyntax(a);
+        String a = "select id_mov,title from movies join usermovies on (movies.id_mov=usermovies.id_mov);";//query. nanti di bikin jadi inputan
+        cekSyntax(a); // cek sintak
         if (status) {
             System.out.println("query jalan");
         }else{
@@ -34,15 +34,15 @@ public class Sqlparser {
     }
     
     private static void cekSyntax(String query){
-        List<String> tokens = tokenizer(query.toLowerCase(),' ');
+        List<String> tokens = tokenizer(query.toLowerCase(),' '); // bikin query jadi hufuf kecil semua trus dipotong potong berdasarkan spasi
         char[] x = tokens.get(tokens.size()-1).toCharArray();
-        if(x[x.length-1] != ';'){
+        if(x[x.length-1] != ';'){ // cek udah ada ; belum
             status = false;
             error = "Syntax Error : ';' expected";
         }else{
             List<String> nrwo = stopWordRemoval(tokens); // not reserved word (bukan select,from,dll)
-            List<String> coloumn = tokenizer(nrwo.get(0),',');
-            if(coloumn.contains("")){
+            List<String> coloumn = tokenizer(nrwo.get(0),','); //potong kumpulan namakolom jadi list. dipisahkan pake koma
+            if(coloumn.contains("")){ // kalo ada koma tapi ga ada nama kolomnya, error
                 status = false;
                 error = "Syntax Error : column epected after ','";
             }

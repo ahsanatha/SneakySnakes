@@ -1,0 +1,3 @@
+movies;id_movie;title;director;studio$
+user; id_user;nama;gender;tipe$
+usermovies;id_review;id_movie;id_user;rating$

@@ -19,6 +19,8 @@ import java.util.List;
 public class Sqlparser {
     public static boolean status = true;
     public static String error = "";
+    public static String tabelUtama = "";
+    public static List<String> coloumn = new ArrayList<>();
     
     public static void main(String[] args) {
         List<List<String>> db = bukaFile("db.txt"); // membuka file
@@ -44,9 +46,9 @@ public class Sqlparser {
             List<String> coloumn = tokenizer(nrwo.get(0),','); //potong kumpulan namakolom jadi list. dipisahkan pake koma
             if(coloumn.contains("")){ // kalo ada koma tapi ga ada nama kolomnya, error
                 status = false;
-                error = "Syntax Error : column epected after ','";
+                error = "Syntax Error : column name expected after ','";
             }
-            
+
         }
         
     }
@@ -85,7 +87,6 @@ public class Sqlparser {
                     error = "Syntax error : Wrong order";
                 }else{
                     order = sw.indexOf(word);
-                    
                 }
             }else{
                 al.add(word);

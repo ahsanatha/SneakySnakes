@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author Muhammad Ahsan Athallah
+ * @author DAFA
  */
 public class Sqlparser {
 
@@ -45,6 +45,7 @@ public class Sqlparser {
 
     private static void tampilOutput() {
         int idx;
+        System.out.println("============================================================");
         for (int i = -1; i < tables.size(); i++) {
             System.out.print("Tabel " + (i + 2) + " : ");
             if (i == -1) {

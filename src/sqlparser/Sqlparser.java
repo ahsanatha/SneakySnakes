@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author DAFA gfgfgfgfgfgffgfgfgf
+ * @author DAFA
  */
 public class Sqlparser {
 

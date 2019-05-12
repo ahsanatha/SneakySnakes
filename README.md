@@ -15,4 +15,4 @@ Muhammad Ahsan Athallah - 1301174068 <br/>
 - can't process alias
 - bug in multiple join
 
-### Reccomended to run with netbeans compiler. Alternate : https://repl.it/@ahsanatha/WideClutteredUsernames , Run.
+### we recomend to run with netbeans compiler. Alternate : https://repl.it/@ahsanatha/WideClutteredUsernames , Run.

@@ -50,6 +50,11 @@ public class main {
                 view3 tiga = new view3();
                 tiga.countBlock();
             }
+            else if (pil== 5){
+                System.out.println("Menu 5 : Share Pool");
+                view5 lima = new view5();
+                lima.view5();
+            }
             System.out.println("__________________________________________");
         }
     }

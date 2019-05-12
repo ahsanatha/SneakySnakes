@@ -1,0 +1,1 @@
+Query : select id_user from user where id_user=10; projection : id_user selection : id_user=10; usercost : 3.0 --A2

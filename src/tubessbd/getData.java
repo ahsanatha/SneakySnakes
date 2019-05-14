@@ -307,6 +307,49 @@ public class getData {
         }
         return 0;
     }    
+    String[] getAttMovies() throws IOException{
+        System.out.println("called");
+        BufferedReader readData = new BufferedReader(new FileReader("db.txt"));
+        String bar1 = readData.readLine();
+        String bar2 = readData.readLine();
+        String[] p = bar2.split(";");
+        String col = p[1];
+        String[] att = col.split(",");
+        String[] kolom = new String[att.length];
+        for (int i = 0; i<att.length; i++){
+            kolom[i] = att[i];
+        }
+        return kolom; //mengembalikan alamat array kolom pembeli
+    }
+    String[] getAttUser() throws IOException{
+        BufferedReader readData = new BufferedReader(new FileReader("db.txt"));
+        String bar1 = readData.readLine();
+        String bar2 = readData.readLine();        
+        String bar3 = readData.readLine();
+        String[] p = bar3.split(";");
+        String col = p[1];
+        String[] a = col.split(",");
+        String[] kolom = new String[a.length];
+        for (int i = 0; i<a.length; i++){
+            kolom[i] = a[i];
+        }
+        return kolom; //mengembalikan alamat array kolom pembeli
+    }
+    String[] getAttUserMovie() throws IOException{
+        BufferedReader readData = new BufferedReader(new FileReader("db.txt"));
+        String bar1 = readData.readLine();
+        String bar2 = readData.readLine();        
+        String bar3 = readData.readLine();
+        String bar4 = readData.readLine();
+        String[] p = bar4.split(";");
+        String col = p[1];
+        String[] a = col.split(",");
+        String[] kolom = new String[a.length];
+        for (int i = 0; i<a.length; i++){
+            kolom[i] = a[i];
+        }
+        return kolom; //mengembalikan alamat array kolom pembeli
+    }
 }
 
  

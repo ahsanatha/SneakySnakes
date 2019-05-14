@@ -1,1 +1,6 @@
-Query : select id_user from user where id_user=10; projection : id_user selection : id_user=10; usercost : 3.0 --A2
+
+sharedpool2
+Query : select * from movies join usermovie using (id_movie);
+              JOIN movies.id_movie = usermovie.id_movie -- Block Nested loop join
+   movies     usermovie
+   Cost (worst case) : 2297169 blok

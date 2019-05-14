@@ -9,10 +9,6 @@ package tubessbd;
 import java.io.IOException;
 import java.util.Scanner;
 
-
-
-
-
 /**
  *
  * @author ASUS
@@ -49,6 +45,14 @@ public class main {
                 System.out.println("Menu 3 : Pencarian Record");
                 view3 tiga = new view3();
                 tiga.countBlock();
+            }
+            else if (pil == 4){
+                System.out.println("Menu 4 : Tampilkan QEP dan Cost");
+                view4 empat = new view4();
+                empat.doMainView4();
+//                String a = "halohalobandung".contains('halo');
+//                System.out.println(a);
+
             }
             else if (pil== 5){
                 System.out.println("Menu 5 : Share Pool");

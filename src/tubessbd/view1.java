@@ -47,7 +47,7 @@ public class view1 {
     }
     
     double countBfr(int B, int R){
-        double bfr = B/R;
+        double bfr = (B/R);
         return bfr;        
     }
     

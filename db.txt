@@ -1,4 +1,4 @@
 P=2;B=8192# 
-movies;id_movie;title;director;studio;R=8;n=150000;V=6#
-user;id_user;nama;gender;tipe;R=10;n=10000;V=7# 
-usermovie;id_review;id_movie;id_user;rating;R=128;n=1000000;V=8#
+movies;id_movie,title,director,studio;R=8;n=150000;V=6#
+user;id_user,nama,gender,tipe;R=10;n=10000;V=7# 
+usermovie;id_review,id_movie,id_user,rating;R=128;n=1000000;V=8#

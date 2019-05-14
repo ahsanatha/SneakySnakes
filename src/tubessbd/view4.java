@@ -14,15 +14,14 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  *
  * @author TSR
  */
 public class view4 {
 
-   getData getter = new getData();
-   private static Scanner scanner;
+    getData getter = new getData();
+    private static Scanner scanner;
     private static Scanner inputStream;
     private static String inputQuery;
 
@@ -38,7 +37,7 @@ public class view4 {
     private static boolean isTableFound;
     private static boolean isAttributeFound;
     private static boolean isTable1Found, isTable2Found, isPk1Found, isPk2Found;
-    
+
     private static ArrayList<String> dbTableName;
 
     void doMainView4() throws IOException {
@@ -51,12 +50,13 @@ public class view4 {
         checkSqlError(inputQuery.toLowerCase());
         System.out.println();
         System.out.println("Output : ");
-        if (outputQuery == null)
+        if (outputQuery == null) {
             System.out.println("Sql Syntax Error");
-        else
+        } else {
             System.out.println(">> " + outputQuery);
+        }
     }
-   //----------------------------------------------------------------------------------checkSqlTypo
+    //----------------------------------------------------------------------------------checkSqlTypo
 
     private static void checkSqlError(String input) throws IOException {
         String inputTemp = input;
@@ -69,22 +69,28 @@ public class view4 {
         if (Pattern.matches(regexJoin, input)) { // kalo dia join
             //System.out.println("regex join");
             Matcher matcher = Pattern.compile("select (.*?) from").matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputAtributeName = matcher.group(1);
+            }
             matcher = Pattern.compile("from (.*?) join").matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputTable1 = matcher.group(1);
+            }
             matcher = Pattern.compile("join (.*?) using").matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputTable2 = matcher.group(1);
+            }
             matcher = Pattern.compile("using(.*?);").matcher(input);
-            
-            if (matcher.find())
+
+            if (matcher.find()) {
                 pkOn = matcher.group(1);
-            if (pkOn.contains("("))
+            }
+            if (pkOn.contains("(")) {
                 pkOn = pkOn.substring(pkOn.indexOf("(") + 1);
-            if (pkOn.contains(")"))
+            }
+            if (pkOn.contains(")")) {
                 pkOn = pkOn.substring(0, pkOn.indexOf(")"));
+            }
 
 //            System.out.println("1. Join");
             checkSqlQuerryJoin();
@@ -92,34 +98,42 @@ public class view4 {
         } else if (Pattern.matches(regexBasicWhere, input)) { // kalo dia where
             //System.out.println("regex basic where");
             Matcher matcher = Pattern.compile("select (.*?) from").matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputAtributeName = matcher.group(1);
+            }
 
             matcher = Pattern.compile("from (.*?) where").matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputTableName = matcher.group(1);
+            }
 
             matcher = Pattern.compile("where (.*?)=").matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputWhereName = matcher.group(1);
+            }
 
             matcher = Pattern.compile("=(.*?);").matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputWhereValue = matcher.group(1);
+            }
 
             //check space where
             matcher = Pattern.compile(" (.*?)").matcher(inputWhereName);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputWhereName = inputWhereName.substring(inputWhereName.indexOf(" ") + 1);
+            }
             matcher = Pattern.compile("(.*?) ").matcher(inputWhereName);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputWhereName = inputWhereName.substring(0, inputWhereName.indexOf(" "));
+            }
             matcher = Pattern.compile(" (.*?)").matcher(inputWhereValue);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputWhereValue = inputWhereValue.substring(inputWhereValue.indexOf(" ") + 1);
+            }
             matcher = Pattern.compile("(.*?) ").matcher(inputWhereValue);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputWhereValue = inputWhereValue.substring(0, inputWhereValue.indexOf(" "));
+            }
 
 //            System.out.println("2. Select Where");
             checkSqlQuerySelectWhere();
@@ -127,13 +141,15 @@ public class view4 {
             //System.out.println("regex basic");
             Pattern pattern = Pattern.compile("select (.*?) from");
             Matcher matcher = pattern.matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputAtributeName = matcher.group(1);
+            }
 
             pattern = Pattern.compile("from (.*?);");
             matcher = pattern.matcher(input);
-            if (matcher.find())
+            if (matcher.find()) {
                 inputTableName = matcher.group(1);
+            }
 //            System.out.println("select ajah");
             checkSqlQuerySelect();
         } else {
@@ -143,26 +159,26 @@ public class view4 {
                 if (inputTemp.indexOf(" ") != -1) {
                     inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
                     numberOfSpace++;
-                } else
+                } else {
                     inputTemp = "";
+                }
             }
-
 
             inputTemp = input;
             //query basic-----------------------------------
             if (numberOfSpace == 3) {
-                if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("select"))
+                if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("select")) {
                     outputQuery = "SQL Error (Syntax Error : " + inputTemp.substring(0, inputTemp.indexOf(" ")) + ")";
-                else {
+                } else {
                     inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
                     inputAtributeName = inputTemp.substring(0, inputTemp.indexOf(" "));
                     inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
-                    if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("from"))
+                    if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("from")) {
                         outputQuery = "SQL Error (Syntax Error : " + inputTemp.substring(0, inputTemp.indexOf(" ")) + ")";
-                    else {
-                        if (!inputTemp.substring(inputTemp.length() - 1).equals(";"))
+                    } else {
+                        if (!inputTemp.substring(inputTemp.length() - 1).equals(";")) {
                             outputQuery = "SQL Error (Missing ;)";
-                        else {
+                        } else {
                             inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
                             inputTableName = inputTemp.substring(0, inputTemp.length() - 1);
                             outputQuery = "";
@@ -171,39 +187,38 @@ public class view4 {
                         }
                     }
                 }
-            }
-            //query join--------------------------------------------
+            } //query join--------------------------------------------
             else if (numberOfSpace == 9) {
-                if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("select"))
+                if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("select")) {
                     outputQuery = "SQL Error (Syntax Error : " + inputTemp.substring(0, inputTemp.indexOf(" ")) + ")";
-                else {
+                } else {
                     inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
                     inputAtributeName = inputTemp.substring(0, inputTemp.indexOf(" "));
                     inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
-                    if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("from"))
+                    if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("from")) {
                         outputQuery = "SQL Error (Syntax Error : " + inputTemp.substring(0, inputTemp.indexOf(" ")) + ")";
-                    else {
+                    } else {
                         inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
                         inputTable1 = inputTemp.substring(0, inputTemp.indexOf(" "));
                         inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
                         //varTable1 = inputTemp.substring(0, inputTemp.indexOf(" "));
                         //inputTemp = inputTemp.substring(inputTemp.indexOf(" ")+1);
-                        if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("join"))
+                        if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("join")) {
                             outputQuery = "SQL Error (Syntax Error : " + inputTemp.substring(0, inputTemp.indexOf(" ")) + ")";
-                        else {
+                        } else {
                             inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
                             inputTable2 = inputTemp.substring(0, inputTemp.indexOf(" "));
                             //inputTemp = inputTemp.substring(inputTemp.indexOf(" ")+1);
                             //varTable2 = inputTemp.substring(0, inputTemp.indexOf(" "));
                             inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
-                            if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("using"))
+                            if (!inputTemp.substring(0, inputTemp.indexOf(" ")).toLowerCase().equals("using")) {
                                 outputQuery = "SQL Error (Syntax Error : " + inputTemp.substring(0, inputTemp.indexOf(" ")) + ")";
-                            else {
+                            } else {
                                 inputTemp = inputTemp.substring(inputTemp.indexOf(" ") + 1);
                                 pkOn = inputTemp.substring(1, inputTemp.length() - 2);
-                                if (!inputTemp.substring(inputTemp.length() - 1).equals(";"))
+                                if (!inputTemp.substring(inputTemp.length() - 1).equals(";")) {
                                     outputQuery = "SQL Error (Missing ;)";
-                                else {
+                                } else {
                                     outputQuery = "";
 //                                    System.out.println("4. cek join");
                                     checkSqlQuerryJoin();
@@ -212,13 +227,14 @@ public class view4 {
                         }
                     }
                 }
-            } else
+            } else {
                 outputQuery = "SQL Error (Syntax Error)";
+            }
         }
     }
     //-----------------------------------------------------------------------------------check Sql Query
 
-    private static void checkSqlQuerySelect() {
+    private static void checkSqlQuerySelect() throws IOException {
         String fileNameDefined = "db.txt";
         File file = new File(fileNameDefined);
 
@@ -231,14 +247,15 @@ public class view4 {
                 String dataTemp = inputStream.next();
                 if (index > 0) {
                     String tableName = dataTemp.substring(0, dataTemp.indexOf(";"));
-                    if (inputTableName.equals(tableName))
+                    if (inputTableName.equals(tableName)) {
                         isTableFound = true;
+                    }
                 }
                 index++;
             }
-            if (!isTableFound)
+            if (!isTableFound) {
                 outputQuery = "SQL Error (table " + inputTableName + " not found)";
-            else {
+            } else {
                 index = 0;
                 inputStream = new Scanner(file);
                 while (inputStream.hasNext()) {
@@ -257,12 +274,14 @@ public class view4 {
                                 String attNameTmp = attributeName;
                                 while (!attNameTmp.isEmpty()) {
                                     if (attNameTmp.contains(",")) {
-                                        if (attNameTmp.substring(0, attNameTmp.indexOf(",")).equals(inputAtributeName))
+                                        if (attNameTmp.substring(0, attNameTmp.indexOf(",")).equals(inputAtributeName)) {
                                             isAttributeFound = true;
+                                        }
                                         attNameTmp = attNameTmp.substring(attNameTmp.indexOf(",") + 1);
                                     } else {
-                                        if (attNameTmp.equals(inputAtributeName))
+                                        if (attNameTmp.equals(inputAtributeName)) {
                                             isAttributeFound = true;
+                                        }
                                         attNameTmp = "";
                                     }
                                 }
@@ -272,8 +291,9 @@ public class view4 {
                                     outputQuery = outputQuery + "   List kolom : " + inputAtributeName;
 
                                     checkQepBasic(inputAtributeName, inputTableName);
-                                } else
+                                } else {
                                     outputQuery = "SQL Error (attribute " + inputAtributeName + " not found on table " + inputTableName + ")";
+                                }
                             } else {
                                 String attNameFix = "";
                                 isAttributeFound = true;
@@ -302,36 +322,40 @@ public class view4 {
                                             attNameFound = s1;
                                         }
 
-                                        if (attNameTmp.contains(","))
+                                        if (attNameTmp.contains(",")) {
                                             attNameTmp = attNameTmp.substring(attNameTmp.indexOf(",") + 1);
-                                        else
+                                        } else {
                                             attNameTmp = "";
+                                        }
                                     }
 
                                     if (attNameFound.isEmpty()) {
                                         isAttributeFound = false;
-                                        if (attNameInputTmp.contains(","))
+                                        if (attNameInputTmp.contains(",")) {
                                             attNameNotFound = attNameInputTmp.substring(0, attNameInputTmp.indexOf(","));
-                                        else
+                                        } else {
                                             attNameNotFound = attNameInputTmp;
+                                        }
                                     } else {
-                                        if (attNameFix.isEmpty())
+                                        if (attNameFix.isEmpty()) {
                                             attNameFix = attNameFound;
-                                        else
+                                        } else {
                                             attNameFix = attNameFix + ", " + attNameFound;
+                                        }
                                     }
 
-                                    if (attNameInputTmp.contains(" "))
+                                    if (attNameInputTmp.contains(" ")) {
                                         attNameInputTmp = attNameInputTmp.substring(attNameInputTmp.indexOf(" ") + 1);
-                                    else if (attNameInputTmp.contains(","))
+                                    } else if (attNameInputTmp.contains(",")) {
                                         attNameInputTmp = attNameInputTmp.substring(attNameInputTmp.indexOf(",") + 1);
-                                    else
+                                    } else {
                                         attNameInputTmp = "";
+                                    }
                                 }
 
-                                if (!isAttributeFound)
+                                if (!isAttributeFound) {
                                     outputQuery = "SQL Error (attribute " + attNameNotFound + " not found on table " + inputTableName + ")";
-                                else {
+                                } else {
                                     outputQuery = "\n";
                                     outputQuery = outputQuery + ">> Tabel (1) : " + inputTableName + "\n";
                                     outputQuery = outputQuery + "   List kolom : " + attNameFix;
@@ -352,7 +376,7 @@ public class view4 {
         }
     }
 
-    private static void checkSqlQuerySelectWhere() {
+    private static void checkSqlQuerySelectWhere() throws IOException {
         String fileNameDefined = "db.txt";
         File file = new File(fileNameDefined);
 
@@ -365,14 +389,15 @@ public class view4 {
                 String dataTemp = inputStream.next();
                 if (index > 0) {
                     String tableName = dataTemp.substring(0, dataTemp.indexOf(";"));
-                    if (inputTableName.equals(tableName))
+                    if (inputTableName.equals(tableName)) {
                         isTableFound = true;
+                    }
                 }
                 index++;
             }
-            if (!isTableFound)
+            if (!isTableFound) {
                 outputQuery = "SQL Error (table " + inputTableName + " not found)";
-            else {
+            } else {
                 index = 0;
                 inputStream = new Scanner(file);
                 while (inputStream.hasNext()) {
@@ -392,12 +417,14 @@ public class view4 {
                                 String attNameTmp = attributeName;
                                 while (!attNameTmp.isEmpty()) {
                                     if (attNameTmp.contains(",")) {
-                                        if (attNameTmp.substring(0, attNameTmp.indexOf(",")).equals(inputAtributeName))
+                                        if (attNameTmp.substring(0, attNameTmp.indexOf(",")).equals(inputAtributeName)) {
                                             isAttributeFound = true;
+                                        }
                                         attNameTmp = attNameTmp.substring(attNameTmp.indexOf(",") + 1);
                                     } else {
-                                        if (attNameTmp.equals(inputAtributeName))
+                                        if (attNameTmp.equals(inputAtributeName)) {
                                             isAttributeFound = true;
+                                        }
                                         attNameTmp = "";
                                     }
                                 }
@@ -408,8 +435,9 @@ public class view4 {
 
                                     String where = inputWhereName + " = " + inputWhereValue;
                                     checkQepBasicWhere(inputAtributeName, inputTableName, where);
-                                } else
+                                } else {
                                     outputQuery = "SQL Error (attribute " + inputAtributeName + " not found on table " + inputTableName + ")";
+                                }
                             } else {
                                 String attNameFix = "";
                                 isAttributeFound = true;
@@ -438,36 +466,40 @@ public class view4 {
                                             attNameFound = s1;
                                         }
 
-                                        if (attNameTmp.contains(","))
+                                        if (attNameTmp.contains(",")) {
                                             attNameTmp = attNameTmp.substring(attNameTmp.indexOf(",") + 1);
-                                        else
+                                        } else {
                                             attNameTmp = "";
+                                        }
                                     }
 
                                     if (attNameFound.isEmpty()) {
                                         isAttributeFound = false;
-                                        if (attNameInputTmp.contains(","))
+                                        if (attNameInputTmp.contains(",")) {
                                             attNameNotFound = attNameInputTmp.substring(0, attNameInputTmp.indexOf(","));
-                                        else
+                                        } else {
                                             attNameNotFound = attNameInputTmp;
+                                        }
                                     } else {
-                                        if (attNameFix.isEmpty())
+                                        if (attNameFix.isEmpty()) {
                                             attNameFix = attNameFound;
-                                        else
+                                        } else {
                                             attNameFix = attNameFix + ", " + attNameFound;
+                                        }
                                     }
 
-                                    if (attNameInputTmp.contains(" "))
+                                    if (attNameInputTmp.contains(" ")) {
                                         attNameInputTmp = attNameInputTmp.substring(attNameInputTmp.indexOf(" ") + 1);
-                                    else if (attNameInputTmp.contains(","))
+                                    } else if (attNameInputTmp.contains(",")) {
                                         attNameInputTmp = attNameInputTmp.substring(attNameInputTmp.indexOf(",") + 1);
-                                    else
+                                    } else {
                                         attNameInputTmp = "";
+                                    }
                                 }
 
-                                if (!isAttributeFound)
+                                if (!isAttributeFound) {
                                     outputQuery = "SQL Error (attribute " + attNameNotFound + " not found on table " + inputTableName + ")";
-                                else {
+                                } else {
                                     outputQuery = "\n";
                                     outputQuery = outputQuery + ">> Tabel (1) : " + inputTableName + "\n";
                                     outputQuery = outputQuery + "   List kolom : " + attNameFix;
@@ -503,10 +535,12 @@ public class view4 {
             while (inputStream.hasNext()) {
                 String dataTemp = inputStream.next();
                 String tableName = dataTemp.substring(0, dataTemp.indexOf(";"));
-                if (inputTable1.equals(tableName))
+                if (inputTable1.equals(tableName)) {
                     isTable1Found = true;
-                if (inputTable2.equals(tableName))
+                }
+                if (inputTable2.equals(tableName)) {
                     isTable2Found = true;
+                }
 
                 if (index > 0) {
                     dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
@@ -520,22 +554,23 @@ public class view4 {
                             dataTemp = "";
                         }
 
-                        if (attribute.equals(pkOn) && !isPk1Found)
+                        if (attribute.equals(pkOn) && !isPk1Found) {
                             isPk1Found = true;
-                        else if (attribute.equals(pkOn))
+                        } else if (attribute.equals(pkOn)) {
                             isPk2Found = true;
+                        }
                     }
                 }
                 index++;
             }
 
-            if (!isTable1Found)
+            if (!isTable1Found) {
                 outputQuery = "SQL Error (table " + inputTable1 + " not found)";
-            else if (!isTable2Found)
+            } else if (!isTable2Found) {
                 outputQuery = "SQL Error (table " + inputTable2 + " not found)";
-            else if (!isPk1Found || !isPk2Found)
+            } else if (!isPk1Found || !isPk2Found) {
                 outputQuery = "SQL Error (attribute Primary key " + pkOn + " not found)";
-            else {
+            } else {
                 if (inputAtributeName.equals("*")) {
                     String attributeName1 = "", attributeName2 = "";
                     inputStream = new Scanner(file);
@@ -594,10 +629,11 @@ public class view4 {
                                     }
 
                                     if (attTmp.equals(attName)) {
-                                        if (att1Name.isEmpty())
+                                        if (att1Name.isEmpty()) {
                                             att1Name = attName;
-                                        else
+                                        } else {
                                             att1Name = att1Name + ", " + attName;
+                                        }
                                         isAtt1Found = true;
                                     }
                                 }
@@ -615,10 +651,11 @@ public class view4 {
                                     }
 
                                     if (attTmp.equals(attName)) {
-                                        if (att2Name.isEmpty())
+                                        if (att2Name.isEmpty()) {
                                             att2Name = attName;
-                                        else
+                                        } else {
                                             att2Name = att2Name + ", " + attName;
+                                        }
                                         isAtt2Found = true;
                                     }
                                 }
@@ -650,154 +687,130 @@ public class view4 {
     }
 
     //-----------------------------------------------------------------------------------check QEP
-
-    private static void checkQepBasic(String attName, String tabName) {
-        int cost1, cost2;
+    private static void checkQepBasic(String attName, String tabName) throws IOException {
+        int cost1, cost2; // bakal itung dua qep
+        getData getter = new getData();
         String qepOptimal;
-
-        String fileNameDefined = "db.txt";
-        File file = new File(fileNameDefined);
-        try {
-            inputStream = new Scanner(file);
-            int index = 0;
-            double valueB = 0, valueP = 0;
-            int valueTotalBlok = 0;
-            int valueY = 0;
-
-            while (inputStream.hasNext()) {
-                String dataTemp = inputStream.next();
-                if (index == 0) {
-                    valueP = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("P") + 2, dataTemp.indexOf("B") - 1));
-                    valueB = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("B") + 2, dataTemp.indexOf("#")));
-                } else {
-                    String tableName = dataTemp.substring(0, dataTemp.indexOf(";"));
-                    if (tableName.equals(tabName)) {
-                        dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
-                        dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
-                        double valueR = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("R") + 2, dataTemp.indexOf("n") - 1));
-                        double valueN = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("n") + 2, dataTemp.indexOf("V") - 1));
-                        double valueV = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("V") + 2, dataTemp.indexOf("#")));
-
-                        int valueBfr = (int) (valueB / valueR);
-                        valueY = (int) (valueB / (valueV + valueP));  //Y = fan out ratio
-                        valueTotalBlok = (int) (valueN / valueBfr) + 1;
-                        //int valueIndexBlok = (int) (valueN/valueY)+1;
-                    }
-                }
-                index++;
-            }
-
-            cost1 = (int) Math.ceil(valueTotalBlok);
-            cost2 = (int) Math.ceil(Math.log(valueY) / Math.log(valueTotalBlok));
-            if (cost1 <= cost2)
-                qepOptimal = "QEP#1";
-            else
-                qepOptimal = "QEP#2";
-
-            outputQuery = outputQuery + "\n>> QEP #1";
-            if (!attName.equals("*"))
-                outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
-            outputQuery = outputQuery + "\n   " + tabName + " A1";
-            outputQuery = outputQuery + "\n   Cost : " + cost1 + " blok";
-            outputQuery = outputQuery + "\n>> QEP #2";
-            if (!attName.equals("*"))
-                outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
-            outputQuery = outputQuery + "\n   " + tabName + " A2";
-            outputQuery = outputQuery + "\n   Cost : " + cost2 + " blok";
-            outputQuery = outputQuery + "\n>> QEP Optimal : " + qepOptimal;
-
-            String outputShared = "sharedpool1";
-            outputShared = outputShared + "\nQuery : " + inputQuery;
-            if (!attName.equals("*"))
-                outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
-            if (cost1 <= cost2) {
-                outputShared = outputShared + "\n   " + tabName + " A1";
-                outputShared = outputShared + "\n   Cost : " + cost1 + " blok";
-            } else {
-                outputShared = outputShared + "\n   " + tabName + " A2";
-                outputShared = outputShared + "\n   Cost : " + cost2 + " blok";
-            }
-            printToSharedPool1(outputShared);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        int valueN, valueR, valueV;
+        int valueB = getter.getB();
+        int valueP = getter.getP();
+        if (tabName.equals("movies")) {
+            valueR = getter.getRmovie();
+            valueN = getter.getNmovie();
+            valueV = getter.getVmovie();
+        } else if (tabName.equals("user")) {
+            valueR = getter.getRuser();
+            valueN = getter.getNuser();
+            valueV = getter.getVuser();
+        } else {
+            valueR = getter.getRuserMovie();
+            valueN = getter.getNuserMovie();
+            valueV = getter.getVuserMovie();
         }
+        int valueBfr = (int) (valueB / valueR);
+        int valueY = (int) Math.floor(valueB / (valueV + valueP));
+        int valueTotalBlok = (int) (valueN / valueBfr);
+
+        cost1 = (int) Math.ceil(valueTotalBlok); // A1
+        cost2 = (int) Math.ceil(Math.log(valueTotalBlok) / Math.log(valueY)); //  A3 nonkey
+        if (cost1 <= cost2) {
+            qepOptimal = "QEP#1";
+        } else {
+            qepOptimal = "QEP#2";
+        }
+
+        outputQuery = outputQuery + "\n>> QEP #1";
+        if (!attName.equals("*")) {
+            outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        outputQuery = outputQuery + "\n   " + tabName + " --A1";
+        outputQuery = outputQuery + "\n   Cost : " + cost1 + " blok";
+        outputQuery = outputQuery + "\n>> QEP #2";
+        if (!attName.equals("*")) {
+            outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        outputQuery = outputQuery + "\n   " + tabName + " --A3";
+        outputQuery = outputQuery + "\n   Cost : " + cost2 + " blok";
+        outputQuery = outputQuery + "\n>> QEP Optimal : " + qepOptimal;
+
+        String outputShared = "sharedpool1";
+        outputShared = outputShared + "\nQuery : " + inputQuery;
+        if (!attName.equals("*")) {
+            outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        if (cost1 <= cost2) {
+            outputShared = outputShared + "\n   " + tabName + " --A1";
+            outputShared = outputShared + "\n   Cost : " + cost1 + " blok";
+        } else {
+            outputShared = outputShared + "\n   " + tabName + " --A3";
+            outputShared = outputShared + "\n   Cost : " + cost2 + " blok";
+        }
+        printToSharedPool1(outputShared);
     }
 
-    private static void checkQepBasicWhere(String attName, String tabName, String where) {
-        int cost1, cost2;
+    private static void checkQepBasicWhere(String attName, String tabName, String where) throws IOException {
+        int cost1, cost2; // bakal itung dua qep
+        getData getter = new getData();
         String qepOptimal;
-
-        String fileNameDefined = "db.txt";
-        File file = new File(fileNameDefined);
-        try {
-            inputStream = new Scanner(file);
-            int index = 0;
-            double valueB = 0, valueP = 0;
-            int valueTotalBlok = 0;
-            int valueY = 0;
-
-            while (inputStream.hasNext()) {
-                String dataTemp = inputStream.next();
-                if (index == 0) {
-                    valueP = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("P") + 2, dataTemp.indexOf("B") - 1));
-                    valueB = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("B") + 2, dataTemp.indexOf("#")));
-                } else {
-                    String tableName = dataTemp.substring(0, dataTemp.indexOf(";"));
-                    if (tableName.equals(tabName)) {
-                        dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
-                        dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
-                        double valueR = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("R") + 2, dataTemp.indexOf("n") - 1));
-                        double valueN = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("n") + 2, dataTemp.indexOf("V") - 1));
-                        double valueV = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("V") + 2, dataTemp.indexOf("#")));
-
-                        int valueBfr = (int) (valueB / valueR);
-                        valueY = (int) (valueB / (valueV + valueP));  //Y = fan out ratio
-                        valueTotalBlok = (int) (valueN / valueBfr) + 1;
-                        //int valueIndexBlok = (int) (valueN/valueY)+1;
-                    }
-                }
-                index++;
-            }
-
-            cost1 = (int) Math.ceil(valueTotalBlok / 2);
-            cost2 = (int) Math.ceil(Math.log(valueY) / Math.log(valueTotalBlok));
-            if (cost1 <= cost2)
-                qepOptimal = "QEP#1";
-            else
-                qepOptimal = "QEP#2";
-
-            outputQuery = outputQuery + "\n>> QEP #1";
-            if (!attName.equals("*"))
-                outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
-            outputQuery = outputQuery + "\n   SELECTION " + where + " -- A1 key";
-            outputQuery = outputQuery + "\n   " + tabName;
-            outputQuery = outputQuery + "\n   Cost : " + cost1 + " blok";
-            outputQuery = outputQuery + "\n>> QEP #2";
-            if (!attName.equals("*"))
-                outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
-            outputQuery = outputQuery + "\n   SELECTION " + where + " -- A2";
-            outputQuery = outputQuery + "\n   " + tabName;
-            outputQuery = outputQuery + "\n   Cost : " + cost2 + " blok";
-            outputQuery = outputQuery + "\n>> QEP Optimal : " + qepOptimal;
-
-
-            String outputShared = "sharedpool1";
-            outputShared = outputShared + "\nQuery : " + inputQuery;
-            if (!attName.equals("*"))
-                outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
-            if (cost1 <= cost2) {
-                outputShared = outputShared + "\n   SELECTION " + where + " -- A1 key";
-                outputShared = outputShared + "\n   " + tabName;
-                outputShared = outputShared + "\n   Cost : " + cost1 + " blok";
-            } else {
-                outputShared = outputShared + "\n   SELECTION " + where + " -- A2";
-                outputShared = outputShared + "\n   " + tabName;
-                outputShared = outputShared + "\n   Cost : " + cost2 + " blok";
-            }
-            printToSharedPool1(outputShared);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        int valueN, valueR, valueV;
+        int valueB = getter.getB();
+        int valueP = getter.getP();
+        if (tabName.equals("movies")) {
+            valueR = getter.getRmovie();
+            valueN = getter.getNmovie();
+            valueV = getter.getVmovie();
+        } else if (tabName.equals("user")) {
+            valueR = getter.getRuser();
+            valueN = getter.getNuser();
+            valueV = getter.getVuser();
+        } else {
+            valueR = getter.getRuserMovie();
+            valueN = getter.getNuserMovie();
+            valueV = getter.getVuserMovie();
         }
+        int valueBfr = (int) (valueB / valueR);
+        int valueY = (int) (valueB / (valueV + valueP));
+        int valueTotalBlok = (int) (valueN / valueBfr);
+
+        cost1 = (int) Math.ceil(valueTotalBlok / 2);
+        cost2 = (int) Math.ceil(Math.log(valueY) / Math.log(valueTotalBlok));
+        if (cost1 <= cost2) {
+            qepOptimal = "QEP#1";
+        } else {
+            qepOptimal = "QEP#2";
+        }
+
+        outputQuery = outputQuery + "\n>> QEP #1";
+        if (!attName.equals("*")) {
+            outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        outputQuery = outputQuery + "\n   SELECTION " + where + " -- A1 key";
+        outputQuery = outputQuery + "\n   " + tabName;
+        outputQuery = outputQuery + "\n   Cost : " + cost1 + " blok";
+        outputQuery = outputQuery + "\n>> QEP #2";
+        if (!attName.equals("*")) {
+            outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        outputQuery = outputQuery + "\n   SELECTION " + where + " -- A2";
+        outputQuery = outputQuery + "\n   " + tabName;
+        outputQuery = outputQuery + "\n   Cost : " + cost2 + " blok";
+        outputQuery = outputQuery + "\n>> QEP Optimal : " + qepOptimal;
+
+        String outputShared = "sharedpool1";
+        outputShared = outputShared + "\nQuery : " + inputQuery;
+        if (!attName.equals("*")) {
+            outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        if (cost1 <= cost2) {
+            outputShared = outputShared + "\n   SELECTION " + where + " -- A1 key";
+            outputShared = outputShared + "\n   " + tabName;
+            outputShared = outputShared + "\n   Cost : " + cost1 + " blok";
+        } else {
+            outputShared = outputShared + "\n   SELECTION " + where + " -- A2";
+            outputShared = outputShared + "\n   " + tabName;
+            outputShared = outputShared + "\n   Cost : " + cost2 + " blok";
+        }
+        printToSharedPool1(outputShared);
     }
 
     private static void checkQepJoin(String attName, String tabName1, String tabName2, String pk) {
@@ -854,20 +867,23 @@ public class view4 {
             br = valueTotalBlok2;
             bs = valueTotalBlok1;
             cost2 = br * bs + br;
-            if (cost1 <= cost2)
+            if (cost1 <= cost2) {
                 qepOptimal = "QEP#1";
-            else
+            } else {
                 qepOptimal = "QEP#2";
+            }
 
             outputQuery = outputQuery + "\n>> QEP #1";
-            if (!attName.equals("*"))
+            if (!attName.equals("*")) {
                 outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+            }
             outputQuery = outputQuery + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- BNLJ";
             outputQuery = outputQuery + "\n   " + tabName1 + "     " + tabName2;
             outputQuery = outputQuery + "\n   Cost (worst case) : " + cost1 + " blok";
             outputQuery = outputQuery + "\n>> QEP #2";
-            if (!attName.equals("*"))
+            if (!attName.equals("*")) {
                 outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+            }
             outputQuery = outputQuery + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- BNLJ";
             outputQuery = outputQuery + "\n   " + tabName1 + "     " + tabName2;
             outputQuery = outputQuery + "\n   Cost : " + cost2 + " blok";
@@ -875,14 +891,16 @@ public class view4 {
 
             String outputShared = "sharedpool2";
             outputShared = outputShared + "\nQuery : " + inputQuery;
-            if (!attName.equals("*"))
+            if (!attName.equals("*")) {
                 outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
+            }
             outputShared = outputShared + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- Block Nested loop join";
             outputShared = outputShared + "\n   " + tabName1 + "     " + tabName2;
-            if (cost1 <= cost2)
+            if (cost1 <= cost2) {
                 outputShared = outputShared + "\n   Cost (worst case) : " + cost1 + " blok";
-            else
+            } else {
                 outputShared = outputShared + "\n   Cost (worst case) : " + cost2 + " blok";
+            }
 
             printToSharedPool2(outputShared);
         } catch (FileNotFoundException e) {
@@ -902,10 +920,10 @@ public class view4 {
             while (inputStream.hasNext()) {
                 String dataTemp = inputStream.nextLine();
 
-                if (dataTemp.equals("sharedpool2")){
-                    isGetSharedBefore=true;
+                if (dataTemp.equals("sharedpool2")) {
+                    isGetSharedBefore = true;
                 }
-                if (isGetSharedBefore){
+                if (isGetSharedBefore) {
                     sharedPoolBefore = sharedPoolBefore + "\n" + dataTemp;
                 }
             }
@@ -914,8 +932,9 @@ public class view4 {
             try {
                 fileWriter = new FileWriter("sharedPool.txt");
                 fileWriter.append(outputShared);
-                if (!sharedPoolBefore.isEmpty())
+                if (!sharedPoolBefore.isEmpty()) {
                     fileWriter.append(sharedPoolBefore);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -933,7 +952,7 @@ public class view4 {
         }
     }
 
-    private static void printToSharedPool2(String outputShared){
+    private static void printToSharedPool2(String outputShared) {
         String sharedPoolBefore = "";
         boolean isGetSharedBefore = false;
 
@@ -944,26 +963,28 @@ public class view4 {
             while (inputStream.hasNext()) {
                 String dataTemp = inputStream.nextLine();
 
-                if (dataTemp.equals("sharedpool1")){
-                    isGetSharedBefore=true;
+                if (dataTemp.equals("sharedpool1")) {
+                    isGetSharedBefore = true;
                 }
-                if (dataTemp.equals("sharedpool2")){
-                    isGetSharedBefore=false;
+                if (dataTemp.equals("sharedpool2")) {
+                    isGetSharedBefore = false;
                 }
-                if (isGetSharedBefore){
-                    if (sharedPoolBefore.isEmpty())
+                if (isGetSharedBefore) {
+                    if (sharedPoolBefore.isEmpty()) {
                         sharedPoolBefore = dataTemp;
-                    else
+                    } else {
                         sharedPoolBefore = sharedPoolBefore + "\n" + dataTemp;
+                    }
                 }
             }
 
             FileWriter fileWriter = null;
             try {
                 fileWriter = new FileWriter("sharedPool.txt");
-                if (!sharedPoolBefore.isEmpty())
+                if (!sharedPoolBefore.isEmpty()) {
                     fileWriter.append(sharedPoolBefore);
-                fileWriter.append("\n"+outputShared);
+                }
+                fileWriter.append("\n" + outputShared);
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

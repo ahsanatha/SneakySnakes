@@ -1,6 +1,12 @@
-
+sharedpool1
+Query : select * from movies where id_movie=1;
+   PROJECTION id_movie,title,director,studio -- on the fly
+   SELECTION id_movie = 1 -- A1 key
+   movies
+   Cost : 0 blok
 sharedpool2
-Query : select * from movies join usermovie using (id_movie);
-              JOIN movies.id_movie = usermovie.id_movie -- Block Nested loop join
-   movies     usermovie
-   Cost (worst case) : 2297169 blok
+Query : SELECT nim,nama FROM Mahasiswa JOIN Registrasi using (nim);
+   PROJECTION nim,nama -- on the fly
+              JOIN mahasiswa.nim = registrasi.nim -- Block Nested loop join
+   mahasiswa     registrasi
+   Cost (worst case) : 3128 blok

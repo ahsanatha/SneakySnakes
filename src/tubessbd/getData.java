@@ -350,6 +350,7 @@ public class getData {
         }
         return kolom; //mengembalikan alamat array kolom pembeli
     }
+   
 }
 
  

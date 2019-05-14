@@ -1,8 +1,9 @@
 sharedpool1
-Query : select id_movie from movies;
-   PROJECTION id_movie -- on the fly
-   movies --A1
-   Cost : 98 blok
+Query : select nama,gender,tipe from user where gender = male;
+   PROJECTION nama, gender, tipe -- on the fly
+   SELECTION  = male -- A2
+   user
+   Cost : 1 blok
 sharedpool2
 Query : select * from movies join usermovie using (id_movie);
               JOIN movies.id_movie = usermovie.id_movie -- Block Nested loop join

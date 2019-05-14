@@ -53,6 +53,8 @@ public class view4 {
             System.out.println("Output : ");
             if (outputQuery == null) {
                 System.out.println("Sql Syntax Error");
+            }else{
+                System.out.println(outputQuery);
             }
             System.out.println("Masih ingin menginput-query? (y/n)");
             pil = scanner.nextLine();
@@ -736,6 +738,7 @@ public class view4 {
 
     private static void checkQepBasicWhere(String attName, String tabName, String where) throws IOException {
         int cost1, cost2; // bakal itung dua qep
+        System.out.println("terpanggil");
         getData getter = new getData();
         String qepOptimal;
         double valueN, valueR, valueV;

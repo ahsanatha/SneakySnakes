@@ -708,8 +708,8 @@ public class view4 {
             valueV = getter.getVuserMovie();
         }
 
-        double valueBfr = (valueB / valueR);
-        System.out.println(valueBfr);
+        double valueBfr = Math.floor(valueB / valueR);
+//        System.out.println(valueBfr);
         int valueTotalBlok = (int) Math.ceil(valueN / valueBfr);
 
         cost1 = valueTotalBlok; // 1 nonkey
@@ -752,8 +752,8 @@ public class view4 {
             valueN = getter.getNuserMovie();
             valueV = getter.getVuserMovie();
         }
-        double valueBfr = valueB / valueR;
-        int valueY = (int) (valueB / (valueV + valueP));
+        double valueBfr = Math.floor(valueB / valueR);
+        int valueY = (int) Math.floor(valueB / (valueV + valueP));
         int valueTotalBlok = (int) Math.ceil(valueN / valueBfr);
 
         cost1 = valueTotalBlok / 2; //A1 key
@@ -809,17 +809,18 @@ public class view4 {
         if (tabName1.equals("movies")) {
             valueR = getter.getRmovie();
             valueN = getter.getNmovie();
-            double valueBfr = valueB / valueR;
+            double valueBfr = Math.floor(valueB / valueR);
             valueTotalBlok1 = (int) Math.ceil(valueN / valueBfr);
         } else if (tabName1.equals("user")) {
             valueR = getter.getRuser();
             valueN = getter.getNuser();
-            double valueBfr = valueB / valueR;
+            double valueBfr = Math.floor(valueB / valueR);
             valueTotalBlok1 = (int) Math.ceil(valueN / valueBfr);
         } else {
             valueR = getter.getRuserMovie();
             valueN = getter.getNuserMovie();
-            double valueBfr = valueB / valueR;
+            double valueBfr = Math.floor(valueB / valueR);
+
             valueTotalBlok1 = (int) Math.ceil(valueN / valueBfr);
         }
         //----hitung total blok 2
@@ -882,10 +883,10 @@ public class view4 {
         }
 
         printToSharedPool2(outputShared);
-}
+    }
 //-------------------------------------------------------------------------------------------print to shared pool
 
-private static void printToSharedPool1(String outputShared) {
+    private static void printToSharedPool1(String outputShared) {
         String sharedPoolBefore = "";
         boolean isGetSharedBefore = false;
 

@@ -1,6 +1,6 @@
 sharedpool1
-Query : select * from movies where id_movie=22;
+Query : select * from movies where id_movie=2;
    PROJECTION id_movie,title,director,studio -- on the fly
-   SELECTION id_movie = 22 -- A1 key
+   SELECTION id_movie = 2 -- A2
    movies
-   Cost : 0 blok
+   Cost : 1 blok

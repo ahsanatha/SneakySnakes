@@ -707,19 +707,12 @@ public class view4 {
             valueN = getter.getNuserMovie();
             valueV = getter.getVuserMovie();
         }
-        
-        int valueBfr = (int) (valueB / valueR);
-        int valueY = (int) Math.floor(valueB / (valueV + valueP));
-        int valueTotalBlok = (int) Math.ceil(valueN / valueBfr);
-        int hi = (int) Math.ceil(Math.log(valueTotalBlok) / Math.log(valueY));
 
-        cost1 = valueTotalBlok; // A1 nonkey
-        cost2 = valueTotalBlok+hi; //  A3 nonkey
-        if (cost1 <= cost2) {
-            qepOptimal = "QEP#1";
-        } else {
-            qepOptimal = "QEP#2";
-        }
+        double valueBfr = (valueB / valueR);
+        System.out.println(valueBfr);
+        int valueTotalBlok = (int) Math.ceil(valueN / valueBfr);
+
+        cost1 = valueTotalBlok; // 1 nonkey
 
         outputQuery = outputQuery + "\n>> QEP #1";
         if (!attName.equals("*")) {
@@ -728,25 +721,14 @@ public class view4 {
         outputQuery = outputQuery + "\n   " + tabName + " --A1";
         outputQuery = outputQuery + "\n   Cost : " + cost1 + " blok";
         outputQuery = outputQuery + "\n>> QEP #2";
-        if (!attName.equals("*")) {
-            outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
-        }
-        outputQuery = outputQuery + "\n   " + tabName + " --A3";
-        outputQuery = outputQuery + "\n   Cost : " + cost2 + " blok";
-        outputQuery = outputQuery + "\n>> QEP Optimal : " + qepOptimal;
 
         String outputShared = "sharedpool1";
         outputShared = outputShared + "\nQuery : " + inputQuery;
         if (!attName.equals("*")) {
             outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
         }
-        if (cost1 <= cost2) {
-            outputShared = outputShared + "\n   " + tabName + " --A1";
-            outputShared = outputShared + "\n   Cost : " + cost1 + " blok";
-        } else {
-            outputShared = outputShared + "\n   " + tabName + " --A3";
-            outputShared = outputShared + "\n   Cost : " + cost2 + " blok";
-        }
+        outputShared = outputShared + "\n   " + tabName + " --A1";
+        outputShared = outputShared + "\n   Cost : " + cost1 + " blok";
         printToSharedPool1(outputShared);
     }
 
@@ -770,12 +752,12 @@ public class view4 {
             valueN = getter.getNuserMovie();
             valueV = getter.getVuserMovie();
         }
-        int valueBfr = (int) (valueB / valueR);
+        double valueBfr = valueB / valueR;
         int valueY = (int) (valueB / (valueV + valueP));
-        int valueTotalBlok = (int) (valueN / valueBfr);
+        int valueTotalBlok = (int) Math.ceil(valueN / valueBfr);
 
-        cost1 = (int) Math.ceil(valueTotalBlok / 2); //A1 key
-        cost2 = (int) Math.ceil(Math.log(valueY) / Math.log(valueTotalBlok)); //A2 key
+        cost1 = valueTotalBlok / 2; //A1 key
+        cost2 = (int) Math.ceil(Math.log(valueTotalBlok) / Math.log(valueY)); //A2 key
         if (cost1 <= cost2) {
             qepOptimal = "QEP#1";
         } else {

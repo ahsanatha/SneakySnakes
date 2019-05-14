@@ -521,7 +521,7 @@ public class view4 {
         }
     }
 
-    private static void checkSqlQuerryJoin() {
+    private static void checkSqlQuerryJoin() throws IOException {
         String fileNameDefined = "db.txt";
         File file = new File(fileNameDefined);
 
@@ -797,103 +797,95 @@ public class view4 {
         printToSharedPool1(outputShared);
     }
 
-    private static void checkQepJoin(String attName, String tabName1, String tabName2, String pk) {
-        int cost1, cost2;
+    private static void checkQepJoin(String attName, String tabName1, String tabName2, String pk) throws IOException {
+        int cost1, cost2; // bakal itung dua qep
+        getData getter = new getData();
         String qepOptimal;
-
-        String fileNameDefined = "db.txt";
-        File file = new File(fileNameDefined);
-        try {
-            inputStream = new Scanner(file);
-            int index = 0;
-            double valueB = 0, valueP = 0;
-            int valueTotalBlok1 = 0;
-            int valueTotalBlok2 = 0;
-
-            while (inputStream.hasNext()) {
-                String dataTemp = inputStream.next();
-                if (index == 0) {
-                    valueP = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("P") + 2, dataTemp.indexOf("B") - 1));
-                    valueB = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("B") + 2, dataTemp.indexOf("#")));
-                } else {
-                    String tableName = dataTemp.substring(0, dataTemp.indexOf(";"));
-                    if (tableName.equals(tabName1)) {
-                        dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
-                        dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
-                        double valueR = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("R") + 2, dataTemp.indexOf("n") - 1));
-                        double valueN = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("n") + 2, dataTemp.indexOf("V") - 1));
-                        double valueV = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("V") + 2, dataTemp.indexOf("#")));
-
-                        int valueBfr = (int) (valueB / valueR);
-                        //valueY = (int) (valueB/(valueV+valueP));  //Y = fan out ratio
-                        valueTotalBlok1 = (int) (valueN / valueBfr) + 1;
-                        //int valueIndexBlok = (int) (valueN/valueY)+1;
-                    } else if (tableName.equals(tabName2)) {
-                        dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
-                        dataTemp = dataTemp.substring(dataTemp.indexOf(";") + 1);
-                        double valueR = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("R") + 2, dataTemp.indexOf("n") - 1));
-                        double valueN = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("n") + 2, dataTemp.indexOf("V") - 1));
-                        double valueV = Double.parseDouble(dataTemp.substring(dataTemp.indexOf("V") + 2, dataTemp.indexOf("#")));
-
-                        int valueBfr = (int) (valueB / valueR);
-                        //valueY = (int) (valueB/(valueV+valueP));  //Y = fan out ratio
-                        valueTotalBlok2 = (int) (valueN / valueBfr) + 1;
-                        //int valueIndexBlok = (int) (valueN/valueY)+1;
-                    }
-                }
-                index++;
-            }
-
-            //cost = br*bs+br
-            int br = valueTotalBlok1;
-            int bs = valueTotalBlok2;
-            cost1 = br * bs + br;
-            br = valueTotalBlok2;
-            bs = valueTotalBlok1;
-            cost2 = br * bs + br;
-            if (cost1 <= cost2) {
-                qepOptimal = "QEP#1";
-            } else {
-                qepOptimal = "QEP#2";
-            }
-
-            outputQuery = outputQuery + "\n>> QEP #1";
-            if (!attName.equals("*")) {
-                outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
-            }
-            outputQuery = outputQuery + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- BNLJ";
-            outputQuery = outputQuery + "\n   " + tabName1 + "     " + tabName2;
-            outputQuery = outputQuery + "\n   Cost (worst case) : " + cost1 + " blok";
-            outputQuery = outputQuery + "\n>> QEP #2";
-            if (!attName.equals("*")) {
-                outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
-            }
-            outputQuery = outputQuery + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- BNLJ";
-            outputQuery = outputQuery + "\n   " + tabName1 + "     " + tabName2;
-            outputQuery = outputQuery + "\n   Cost : " + cost2 + " blok";
-            outputQuery = outputQuery + "\n>> QEP Optimal : " + qepOptimal;
-
-            String outputShared = "sharedpool2";
-            outputShared = outputShared + "\nQuery : " + inputQuery;
-            if (!attName.equals("*")) {
-                outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
-            }
-            outputShared = outputShared + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- Block Nested loop join";
-            outputShared = outputShared + "\n   " + tabName1 + "     " + tabName2;
-            if (cost1 <= cost2) {
-                outputShared = outputShared + "\n   Cost (worst case) : " + cost1 + " blok";
-            } else {
-                outputShared = outputShared + "\n   Cost (worst case) : " + cost2 + " blok";
-            }
-
-            printToSharedPool2(outputShared);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        double valueN, valueR, valueV;
+        double valueB = getter.getB();
+        double valueP = getter.getP();
+        int valueTotalBlok1, valueTotalBlok2;
+        //----------hitung total blok 1
+        if (tabName1.equals("movies")) {
+            valueR = getter.getRmovie();
+            valueN = getter.getNmovie();
+            double valueBfr = valueB / valueR;
+            valueTotalBlok1 = (int) Math.ceil(valueN / valueBfr);
+        } else if (tabName1.equals("user")) {
+            valueR = getter.getRuser();
+            valueN = getter.getNuser();
+            double valueBfr = valueB / valueR;
+            valueTotalBlok1 = (int) Math.ceil(valueN / valueBfr);
+        } else {
+            valueR = getter.getRuserMovie();
+            valueN = getter.getNuserMovie();
+            double valueBfr = valueB / valueR;
+            valueTotalBlok1 = (int) Math.ceil(valueN / valueBfr);
         }
-    }
-    //-------------------------------------------------------------------------------------------print to shared pool
+        //----hitung total blok 2
+        if (tabName2.equals("movies")) {
+            valueR = getter.getRmovie();
+            valueN = getter.getNmovie();
+            double valueBfr = valueB / valueR;
+            valueTotalBlok2 = (int) Math.ceil(valueN / valueBfr);
+        } else if (tabName2.equals("user")) {
+            valueR = getter.getRuser();
+            valueN = getter.getNuser();
+            double valueBfr = valueB / valueR;
+            valueTotalBlok2 = (int) Math.ceil(valueN / valueBfr);
+        } else {
+            valueR = getter.getRuserMovie();
+            valueN = getter.getNuserMovie();
+            double valueBfr = valueB / valueR;
+            valueTotalBlok2 = (int) Math.ceil(valueN / valueBfr);
+        }
+        //cost = br*bs+br
+        int br = valueTotalBlok1;
+        int bs = valueTotalBlok2;
+        cost1 = br * bs + br;
+        br = valueTotalBlok2;
+        bs = valueTotalBlok1;
+        cost2 = br * bs + br;
+        if (cost1 <= cost2) {
+            qepOptimal = "QEP#1";
+        } else {
+            qepOptimal = "QEP#2";
+        }
 
-    private static void printToSharedPool1(String outputShared) {
+        outputQuery = outputQuery + "\n>> QEP #1";
+        if (!attName.equals("*")) {
+            outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        outputQuery = outputQuery + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- BNLJ";
+        outputQuery = outputQuery + "\n   " + tabName1 + "     " + tabName2;
+        outputQuery = outputQuery + "\n   Cost (worst case) : " + cost1 + " blok";
+        outputQuery = outputQuery + "\n>> QEP #2";
+        if (!attName.equals("*")) {
+            outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        outputQuery = outputQuery + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- BNLJ";
+        outputQuery = outputQuery + "\n   " + tabName1 + "     " + tabName2;
+        outputQuery = outputQuery + "\n   Cost : " + cost2 + " blok";
+        outputQuery = outputQuery + "\n>> QEP Optimal : " + qepOptimal;
+
+        String outputShared = "sharedpool2";
+        outputShared = outputShared + "\nQuery : " + inputQuery;
+        if (!attName.equals("*")) {
+            outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
+        }
+        outputShared = outputShared + "\n              JOIN " + tabName1 + "." + pk + " = " + tabName2 + "." + pk + " -- Block Nested loop join";
+        outputShared = outputShared + "\n   " + tabName1 + "     " + tabName2;
+        if (cost1 <= cost2) {
+            outputShared = outputShared + "\n   Cost (worst case) : " + cost1 + " blok";
+        } else {
+            outputShared = outputShared + "\n   Cost (worst case) : " + cost2 + " blok";
+        }
+
+        printToSharedPool2(outputShared);
+}
+//-------------------------------------------------------------------------------------------print to shared pool
+
+private static void printToSharedPool1(String outputShared) {
         String sharedPoolBefore = "";
         boolean isGetSharedBefore = false;
 

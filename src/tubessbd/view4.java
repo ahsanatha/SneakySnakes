@@ -669,7 +669,7 @@ public class view4 {
                         }
                     }
                     if (isAttFound) {
-                        outputQuery = "\n";
+//                        outputQuery = "\n";
                         outputQuery = outputQuery + ">> Tabel (1) : " + inputTable1 + "\n";
                         outputQuery = outputQuery + "   List kolom : " + att1Name + "\n";
                         outputQuery = outputQuery + "   Tabel (2) : " + inputTable2 + "\n";
@@ -691,9 +691,9 @@ public class view4 {
         int cost1, cost2; // bakal itung dua qep
         getData getter = new getData();
         String qepOptimal;
-        int valueN, valueR, valueV;
-        int valueB = getter.getB();
-        int valueP = getter.getP();
+        double valueN, valueR, valueV;
+        double valueB = getter.getB();
+        double valueP = getter.getP();
         if (tabName.equals("movies")) {
             valueR = getter.getRmovie();
             valueN = getter.getNmovie();
@@ -707,12 +707,14 @@ public class view4 {
             valueN = getter.getNuserMovie();
             valueV = getter.getVuserMovie();
         }
+        
         int valueBfr = (int) (valueB / valueR);
         int valueY = (int) Math.floor(valueB / (valueV + valueP));
-        int valueTotalBlok = (int) (valueN / valueBfr);
+        int valueTotalBlok = (int) Math.ceil(valueN / valueBfr);
+        int hi = (int) Math.ceil(Math.log(valueTotalBlok) / Math.log(valueY));
 
-        cost1 = (int) Math.ceil(valueTotalBlok); // A1
-        cost2 = (int) Math.ceil(Math.log(valueTotalBlok) / Math.log(valueY)); //  A3 nonkey
+        cost1 = valueTotalBlok; // A1 nonkey
+        cost2 = valueTotalBlok+hi; //  A3 nonkey
         if (cost1 <= cost2) {
             qepOptimal = "QEP#1";
         } else {
@@ -752,9 +754,9 @@ public class view4 {
         int cost1, cost2; // bakal itung dua qep
         getData getter = new getData();
         String qepOptimal;
-        int valueN, valueR, valueV;
-        int valueB = getter.getB();
-        int valueP = getter.getP();
+        double valueN, valueR, valueV;
+        double valueB = getter.getB();
+        double valueP = getter.getP();
         if (tabName.equals("movies")) {
             valueR = getter.getRmovie();
             valueN = getter.getNmovie();
@@ -772,8 +774,8 @@ public class view4 {
         int valueY = (int) (valueB / (valueV + valueP));
         int valueTotalBlok = (int) (valueN / valueBfr);
 
-        cost1 = (int) Math.ceil(valueTotalBlok / 2);
-        cost2 = (int) Math.ceil(Math.log(valueY) / Math.log(valueTotalBlok));
+        cost1 = (int) Math.ceil(valueTotalBlok / 2); //A1 key
+        cost2 = (int) Math.ceil(Math.log(valueY) / Math.log(valueTotalBlok)); //A2 key
         if (cost1 <= cost2) {
             qepOptimal = "QEP#1";
         } else {

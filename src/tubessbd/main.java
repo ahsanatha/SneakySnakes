@@ -50,8 +50,6 @@ public class main {
                 System.out.println("Menu 4 : Tampilkan QEP dan Cost");
                 view4 empat = new view4();
                 empat.doMainView4();
-//                String a = "halohalobandung".contains('halo');
-//                System.out.println(a);
 
             }
             else if (pil== 5){

@@ -41,19 +41,21 @@ public class view4 {
     private static ArrayList<String> dbTableName;
 
     void doMainView4() throws IOException {
-//        System.out.println("\nMENU 4 : QEP dan Cost");
         scanner = new Scanner(System.in);
-        System.out.println("Input Query : ");
-        System.out.print(">> ");
-        inputQuery = scanner.nextLine();
+        String pil = "y";
+        while (pil.equals("y")) {
+            System.out.println("Input Query : ");
+            System.out.print(">> ");
+            inputQuery = scanner.nextLine();
 //        takeAllData();
-        checkSqlError(inputQuery.toLowerCase());
-        System.out.println();
-        System.out.println("Output : ");
-        if (outputQuery == null) {
-            System.out.println("Sql Syntax Error");
-        } else {
-            System.out.println(">> " + outputQuery);
+            checkSqlError(inputQuery.toLowerCase());
+            System.out.println();
+            System.out.println("Output : ");
+            if (outputQuery == null) {
+                System.out.println("Sql Syntax Error");
+            }
+            System.out.println("Masih ingin menginput-query? (y/n)");
+            pil = scanner.nextLine();
         }
     }
     //----------------------------------------------------------------------------------checkSqlTypo

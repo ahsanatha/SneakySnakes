@@ -1,4 +1,27 @@
 sharedpool1
+Query : select * from user;
+   PROJECTION id_user,nama,gender,tipe
+   user --A1
+   Cost : 184 blok
+sharedpool1
+Query : select * from movies;
+   movies --A1
+   Cost : 98 blok
+sharedpool2
+Query : select * from movies join usermovie using (id_movie);
+              JOIN movies.id_movie = usermovie.id_movie -- Block Nested loop join
+   movies     usermovie
+   Cost (worst case) : 183848 blok
+sharedpool1
+Query : select id_movie from movies;
+   PROJECTION id_movie -- on the fly
+   movies --A1
+   Cost : 98 blok
+sharedpool1
+Query : select * from movies;
+   movies --A1
+   Cost : 98 blok
+sharedpool1
 Query : select nama,gender,tipe from user where gender = male;
    PROJECTION nama, gender, tipe -- on the fly
    SELECTION  = male -- A2
@@ -8,4 +31,4 @@ sharedpool2
 Query : select * from movies join usermovie using (id_movie);
               JOIN movies.id_movie = usermovie.id_movie -- Block Nested loop join
    movies     usermovie
-   Cost (worst case) : 198 blok
+   Cost (worst case) : 183848 blok

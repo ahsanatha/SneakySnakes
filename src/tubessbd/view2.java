@@ -22,8 +22,8 @@ public class view2 {
         int n1 = data.getNmovie();
         String tableName1 = data.getTbName1();
         
-        double countData1 = countData(n1, B, R1);
-        double countIndex1 = countIndex(n1, B, V1, P);
+        int countData1 = countData(n1, B, R1);
+        int countIndex1 = countIndex(n1, B, V1, P);
         System.out.println("   Tabel Data "+tableName1+" : "+countData1);  
         System.out.println("   Index "+tableName1+" : "+countIndex1);
         
@@ -32,8 +32,8 @@ public class view2 {
         int n2 = data.getNuser();
         String tableName2 = data.getTbName2();
         
-        double countData2 = countData(n2, B, R2);
-        double countIndex2 = countIndex(n2, B, V2, P);
+        int countData2 = countData(n2, B, R2);
+        int countIndex2 = countIndex(n2, B, V2, P);
         System.out.println("   Tabel Data "+tableName2+" : "+countData2);
         System.out.println("   Index "+tableName2+" : "+countIndex2);
             
@@ -42,17 +42,17 @@ public class view2 {
         int n3 = data.getNuserMovie();
         String tableName3 = data.getTbName3();
         
-        double countData3 = countData(n3, B, R3);
-        double countIndex3 = countIndex(n3, B, V3, P);
+        int countData3 = countData(n3, B, R3);
+        int countIndex3 = countIndex(n3, B, V3, P);
         System.out.println("   Tabel Data "+tableName3+" : "+countData3);
         System.out.println("   Index "+tableName3+" : "+countIndex3);
     }
     
-    double countData(int n, int  B, int R) throws IOException{
+    int countData(int n, int  B, int R) throws IOException{
         view1 bfr = new view1();
-        double a = bfr.countBfr(B, R);
-        double cData = (n/a); // hitung table data
-        double sisa = n % a;
+        int a = (int) bfr.countBfr(B, R);
+        int cData = (n/a); // hitung table data
+        int sisa = n % a;
         if (sisa == 0){
             return cData;
         } else {
@@ -61,11 +61,11 @@ public class view2 {
         
     }
     
-    double countIndex(int n, int B, int V, int P) throws IOException{
+    int countIndex(int n, int B, int V, int P) throws IOException{
         view1 fr = new view1();
-        double b = fr.countFr(B, V, P);
-        double cIndex = n/b;
-        double sisa = n % b;
+        int b = (int) Math.floor(fr.countFr(B, V, P));
+        int cIndex = n/b;
+        int sisa = n % b;
         if (sisa == 0){
             return cIndex;
         } else {

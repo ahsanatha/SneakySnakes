@@ -22,8 +22,8 @@ public class view1 {
         int Vm = data.getVmovie();
         String tableName1 = data.getTbName1();
         
-        double bfr1 = countBfr(B,Rm);
-        double fr1 = countFr(B, Vm, P);
+        int bfr1 = (int) Math.floor(countBfr(B,Rm));
+        int fr1 = (int) countFr(B, Vm, P);
         System.out.println("   BFR "+tableName1+" : "+bfr1);
         System.out.println("   Fanout Ratio "+tableName1+" : "+fr1);
         
@@ -31,8 +31,8 @@ public class view1 {
         int Vu = data.getVuser();
         String tableName2 = data.getTbName2();
         
-        double bfr2 = countBfr(B,Ru);
-        double fr2 = countFr(B, Vu, P);
+        int bfr2 = (int) Math.floor(countBfr(B,Rm));
+        int fr2 = (int)countFr(B, Vu, P);
         System.out.println("   BFR "+tableName2+" : "+bfr2);
         System.out.println("   Fanout Ratio "+tableName2+" : "+fr2);
 
@@ -40,8 +40,8 @@ public class view1 {
         int Vum = data.getVuserMovie();
         String tableName3 = data.getTbName3();
         
-        double bfr3 = countBfr(B,Rum);
-        double fr3 = countFr(B, Vum, P);
+        int bfr3 = (int) Math.floor(countBfr(B,Rm));
+        int fr3 = (int) countFr(B, Vum, P);
         System.out.println("   BFR "+tableName3+" : "+bfr3);
         System.out.println("   Fanout Ratio "+tableName3+" : "+fr3);
     }

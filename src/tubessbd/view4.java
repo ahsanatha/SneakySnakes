@@ -50,10 +50,10 @@ public class view4 {
 //        takeAllData();
             checkSqlError(inputQuery.toLowerCase());
             System.out.println();
-            System.out.println("Output : ");
+            System.out.print("Output : ");
             if (outputQuery == null) {
                 System.out.println("Sql Syntax Error");
-            }else{
+            } else {
                 System.out.println(outputQuery);
             }
             System.out.println("Masih ingin menginput-query? (y/n)");
@@ -273,7 +273,7 @@ public class view4 {
                                 outputQuery = outputQuery + ">> Tabel : " + inputTableName + "\n";
                                 outputQuery = outputQuery + "   List kolom : " + attributeName;
 
-                                checkQepBasic(inputAtributeName, inputTableName);
+                                checkQepBasic(inputAtributeName, inputTableName, attributeName);
                             } else if (!inputAtributeName.contains(",")) {
                                 String attNameTmp = attributeName;
                                 while (!attNameTmp.isEmpty()) {
@@ -294,7 +294,7 @@ public class view4 {
                                     outputQuery = outputQuery + ">> Tabel : " + inputTableName + "\n";
                                     outputQuery = outputQuery + "   List kolom : " + inputAtributeName;
 
-                                    checkQepBasic(inputAtributeName, inputTableName);
+                                    checkQepBasic(inputAtributeName, inputTableName, attributeName);
                                 } else {
                                     outputQuery = "SQL Error (attribute " + inputAtributeName + " not found on table " + inputTableName + ")";
                                 }
@@ -364,7 +364,7 @@ public class view4 {
                                     outputQuery = outputQuery + ">> Tabel (1) : " + inputTableName + "\n";
                                     outputQuery = outputQuery + "   List kolom : " + attNameFix;
 
-                                    checkQepBasic(attNameFix, inputTableName);
+                                    checkQepBasic(attNameFix, inputTableName, attributeName);
                                 }
                             }
                         }
@@ -691,7 +691,7 @@ public class view4 {
     }
 
     //-----------------------------------------------------------------------------------check QEP
-    private static void checkQepBasic(String attName, String tabName) throws IOException {
+    private static void checkQepBasic(String attName, String tabName, String attributeName) throws IOException {
         int cost1, cost2; // bakal itung dua qep
         getData getter = new getData();
         String qepOptimal;
@@ -721,15 +721,19 @@ public class view4 {
         outputQuery = outputQuery + "\n>> QEP #1";
         if (!attName.equals("*")) {
             outputQuery = outputQuery + "\n   PROJECTION " + attName + " -- on the fly";
+        } else {
+            outputQuery = outputQuery + "\n   PROJECTION " + attributeName;
+
         }
         outputQuery = outputQuery + "\n   " + tabName + " --A1";
         outputQuery = outputQuery + "\n   Cost : " + cost1 + " blok";
-        outputQuery = outputQuery + "\n>> QEP #2";
 
         String outputShared = "sharedpool1";
         outputShared = outputShared + "\nQuery : " + inputQuery;
         if (!attName.equals("*")) {
             outputShared = outputShared + "\n   PROJECTION " + attName + " -- on the fly";
+        } else {
+            outputShared = outputShared + "\n   PROJECTION " + attributeName;
         }
         outputShared = outputShared + "\n   " + tabName + " --A1";
         outputShared = outputShared + "\n   Cost : " + cost1 + " blok";
@@ -887,13 +891,13 @@ public class view4 {
             outputShared = outputShared + "\n   Cost (worst case) : " + cost2 + " blok";
         }
 
-        printToSharedPool2(outputShared);
+        printToSharedPool1(outputShared);
     }
 //-------------------------------------------------------------------------------------------print to shared pool
 
     private static void printToSharedPool1(String outputShared) {
         String sharedPoolBefore = "";
-        boolean isGetSharedBefore = false;
+        boolean isGetSharedBefore = true;
 
         String fileNameDefined = "sharedPool.txt";
         File file = new File(fileNameDefined);
@@ -902,9 +906,6 @@ public class view4 {
             while (inputStream.hasNext()) {
                 String dataTemp = inputStream.nextLine();
 
-                if (dataTemp.equals("sharedpool2")) {
-                    isGetSharedBefore = true;
-                }
                 if (isGetSharedBefore) {
                     sharedPoolBefore = sharedPoolBefore + "\n" + dataTemp;
                 }
